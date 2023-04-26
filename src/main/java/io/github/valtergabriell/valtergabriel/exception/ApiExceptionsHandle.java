@@ -6,13 +6,12 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
-public class ApiRequestException {
-
-    @ExceptionHandler(value = {RequestException.class})
-    public ResponseEntity<ApiException> handleApiRequestException(RequestException e) {
-        ApiException exception = new ApiException(
+public class ApiExceptionsHandle {
+    @ExceptionHandler(value = {RequestExceptions.class})
+    public ResponseEntity<Object> handleApiRequestException(RequestExceptions e) {
+        APIException exception = new APIException(
                 e.getMessage()
         );
-        return ResponseEntity.badRequest().body(exception);
+        return new ResponseEntity<>(exception, HttpStatus.BAD_REQUEST);
     }
 }

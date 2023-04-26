@@ -18,7 +18,7 @@ public class JobsController {
     }
 
     @PostMapping(value = "/create", params = {"leadId", "colaboratorId"})
-    public ResponseEntity<CreateJobsResponse> createNewJob(@RequestBody Job orderJob, @RequestParam("leadId") String leadId, @RequestParam("colaboratorId") String colaboratorId) {
+    public ResponseEntity<CreateJobsResponse> createNewJob(@RequestBody Job orderJob, @RequestParam("leadId") Long leadId, @RequestParam("colaboratorId") Long colaboratorId) {
         CreateJobsResponse createJobsResponse = jobService.createNewJob(orderJob, leadId, colaboratorId);
         return new ResponseEntity<>(createJobsResponse, HttpStatus.CREATED);
     }

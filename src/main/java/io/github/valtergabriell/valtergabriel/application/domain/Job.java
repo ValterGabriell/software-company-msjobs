@@ -25,22 +25,22 @@ public class Job implements Serializable {
     private Boolean isCanceled;
     private LocalDate creationDay;
     private LocalDate finishDay;
-    private String leadId;
-    private String colaboratorId;
+    private Long leadId;
+    private Long colaboratorId;
 
-    public String getLeadId() {
+    public Long getLeadId() {
         return leadId;
     }
 
-    public void setLeadId(String leadId) {
+    public void setLeadId(Long leadId) {
         this.leadId = leadId;
     }
 
-    public String getColaboratorId() {
+    public Long getColaboratorId() {
         return colaboratorId;
     }
 
-    public void setColaboratorId(String colaboratorId) {
+    public void setColaboratorId(Long colaboratorId) {
         this.colaboratorId = colaboratorId;
     }
 

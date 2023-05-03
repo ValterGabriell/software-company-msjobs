@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class JobService {
@@ -60,6 +61,10 @@ public class JobService {
         return createJobsResponse;
     }
 
+    public List<Job> getAllJobsFromColaborator(Long colaboratorId) {
+        return jobRepo.findByColaboratorId(colaboratorId);
+    }
+
     private void throwingErroWhenLeadOrColaboratorAreNotValid(Long leadId, Long colaboratorId) {
         Response<Colaborator> colaboratorResponse = verifyIfColaboratorIsValid(colaboratorId);
         Response<Lead> leadResponse = verifyIfLeadIsValid(leadId);
@@ -77,11 +82,11 @@ public class JobService {
         return finishDate.isAfter(date);
     }
 
-    public Response<Colaborator> verifyIfColaboratorIsValid(Long cpf) {
+    private Response<Colaborator> verifyIfColaboratorIsValid(Long cpf) {
         return colaboratorApiConnection.getColaboratorById(cpf);
     }
 
-    public Response<Lead> verifyIfLeadIsValid(Long cnpj) {
+    private Response<Lead> verifyIfLeadIsValid(Long cnpj) {
         return leadApiConnection.findLeadById(cnpj);
     }
 }

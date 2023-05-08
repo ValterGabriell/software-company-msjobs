@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -28,7 +29,69 @@ public class JobsController {
     @GetMapping(params = {"colaboratorId"})
     public ResponseEntity<List<Job>> findAllJobsByColaborator(@RequestParam("colaboratorId") Long colaboratorId) {
         List<Job> allJobsFromColaborator = jobService.getAllJobsFromColaborator(colaboratorId);
-        return new ResponseEntity<>(allJobsFromColaborator, HttpStatus.CREATED);
+        return new ResponseEntity<>(allJobsFromColaborator, HttpStatus.OK);
     }
+
+    @GetMapping(params = {"leadId"})
+    public ResponseEntity<List<Job>> findAllJobsByLead(@RequestParam("leadId") Long leadId) {
+        List<Job> allJobsFromLead = jobService.getAllJobsFromLead(leadId);
+        return new ResponseEntity<>(allJobsFromLead, HttpStatus.OK);
+    }
+
+
+    @GetMapping(params = {"jobId"})
+    public ResponseEntity<Job> findJobById(@RequestParam("jobId") String jobId) {
+        Job job = jobService.getJobById(jobId);
+        return new ResponseEntity<>(job, HttpStatus.OK);
+    }
+
+    @GetMapping("/canceled")
+    public ResponseEntity<List<Job>> findAllCanceledJobs() {
+        List<Job> jobs = jobService.getAllCanceledJobs();
+        return new ResponseEntity<>(jobs, HttpStatus.OK);
+    }
+
+    @GetMapping("/not-canceled")
+    public ResponseEntity<List<Job>> findAllNotCanceledJobs() {
+        List<Job> jobs = jobService.getAllNotCanceledJobs();
+        return new ResponseEntity<>(jobs, HttpStatus.OK);
+    }
+
+    @GetMapping("/open")
+    public ResponseEntity<List<Job>> findAllOpenJobs() {
+        List<Job> jobs = jobService.getAllOpenJobs();
+        return new ResponseEntity<>(jobs, HttpStatus.OK);
+    }
+
+    @GetMapping("/finished")
+    public ResponseEntity<List<Job>> findAllFinishedJobs() {
+        List<Job> jobs = jobService.getAllFinishedJobs();
+        return new ResponseEntity<>(jobs, HttpStatus.OK);
+    }
+
+    @PutMapping(params = {"jobId", "finishDate"})
+    public ResponseEntity<Job> updateFinishDateJob(@RequestParam String jobId, @RequestParam LocalDate finishDate) {
+        Job job = jobService.updateFinishDateJob(jobId, finishDate);
+        return new ResponseEntity<>(job, HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/finished", params = {"jobId"})
+    public ResponseEntity<Job> updateFinishedJob(@RequestParam String jobId) {
+        Job job = jobService.updateFinishedJob(jobId);
+        return new ResponseEntity<>(job, HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/canceled", params = {"jobId"})
+    public ResponseEntity<Job> updateCanceledJob(@RequestParam String jobId) {
+        Job job = jobService.updateCanceledJob(jobId);
+        return new ResponseEntity<>(job, HttpStatus.OK);
+    }
+
+    @DeleteMapping(params = {"jobId"})
+    public ResponseEntity deleteJob(@RequestParam String jobId) {
+        jobService.deleteJob(jobId);
+        return ResponseEntity.noContent().build();
+    }
+
 
 }

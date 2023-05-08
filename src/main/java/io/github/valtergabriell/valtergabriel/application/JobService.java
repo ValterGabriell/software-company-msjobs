@@ -44,7 +44,6 @@ public class JobService {
             orderJob.setCreationDay(localDate);
             orderJob.setFinished(false);
             orderJob.setCanceled(false);
-            orderJob.setWantDelete(false);
             orderJob.setLeadId(leadId);
             orderJob.setColaboratorId(colaboratorId);
         } else {
@@ -59,6 +58,10 @@ public class JobService {
         createJobsResponse.setUrl(uri);
 
         return createJobsResponse;
+    }
+
+    public Job getJobById(String jobId) {
+        return jobRepo.findById(jobId).orElseThrow(() -> new RequestExceptions("Trabalho não encontrado!"));
     }
 
     public List<Job> getAllJobsFromColaborator(Long colaboratorId) {
@@ -88,5 +91,60 @@ public class JobService {
 
     private Response<Lead> verifyIfLeadIsValid(Long cnpj) {
         return leadApiConnection.findLeadById(cnpj);
+    }
+
+    public List<Job> getAllJobsFromLead(Long leadId) {
+        return jobRepo.findByLeadId(leadId);
+    }
+
+    public List<Job> getAllCanceledJobs() {
+        return jobRepo.findAllCanceledJobs();
+    }
+
+    public List<Job> getAllNotCanceledJobs() {
+        return jobRepo.findAllNotCanceledJobs();
+    }
+
+    public List<Job> getAllFinishedJobs() {
+        return jobRepo.findAllFinishedJobs();
+    }
+
+    public List<Job> getAllOpenJobs() {
+        return jobRepo.findAllOpenJobs();
+    }
+
+    public void deleteJob(String jobId) {
+        Job job = jobRepo.findById(jobId).orElseThrow(() -> new RequestExceptions("Trabalho não encontrado!"));
+        jobRepo.delete(job);
+    }
+
+    public Job updateFinishDateJob(String jobId, LocalDate newFinisheDate) {
+        Job job = jobRepo.findById(jobId).orElseThrow(() -> new RequestExceptions("Trabalho não encontrado!"));
+        if (job.getFinished() || job.getCanceled()){
+            throw new RequestExceptions("Não se pode atualizar a data final de um trabalho que está finalizado ou cancelado!!!");
+        }
+        job.setFinishDay(newFinisheDate);
+        jobRepo.save(job);
+        return job;
+    }
+
+    public Job updateFinishedJob(String jobId) {
+        Job job = jobRepo.findById(jobId).orElseThrow(() -> new RequestExceptions("Trabalho não encontrado!"));
+        if (job.getCanceled()){
+            throw new RequestExceptions("Não se pode atualizar a finalização um trabalho que está cancelado!!!");
+        }
+        job.setFinished(!job.getFinished());
+        jobRepo.save(job);
+        return job;
+    }
+
+    public Job updateCanceledJob(String jobId) {
+        Job job = jobRepo.findById(jobId).orElseThrow(() -> new RequestExceptions("Trabalho não encontrado!"));
+        if (job.getFinished()){
+            throw new RequestExceptions("Não se pode atualizar o cancelamento de um trabalho que está finalizado!!!");
+        }
+        job.setCanceled(!job.getCanceled());
+        jobRepo.save(job);
+        return job;
     }
 }

@@ -21,7 +21,6 @@ public class Job implements Serializable {
     private String name;
     private String description;
     private Boolean isFinished;
-    private Boolean wantDelete;
     private Boolean isCanceled;
     private LocalDate creationDay;
     private LocalDate finishDay;
@@ -72,13 +71,6 @@ public class Job implements Serializable {
         isFinished = finished;
     }
 
-    public Boolean getWantDelete() {
-        return wantDelete;
-    }
-
-    public void setWantDelete(Boolean wantDelete) {
-        this.wantDelete = wantDelete;
-    }
 
     public Boolean getCanceled() {
         return isCanceled;
@@ -102,11 +94,6 @@ public class Job implements Serializable {
 
     public void setFinishDay(LocalDate finishDay) {
         this.finishDay = finishDay;
-    }
-
-    public void toDomain(Job job) {
-        this.creationDay = job.creationDay;
-        this.creationDay = job.creationDay;
     }
 
 }

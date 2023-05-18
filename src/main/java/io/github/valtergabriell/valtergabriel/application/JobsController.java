@@ -88,8 +88,14 @@ public class JobsController {
     }
 
     @DeleteMapping(params = {"jobId"})
-    public ResponseEntity deleteJob(@RequestParam String jobId) {
+    public ResponseEntity<?> deleteJob(@RequestParam String jobId) {
         jobService.deleteJob(jobId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping(value = "delete-all-jobs-by-colaborator", params = {"colaboratorId"})
+    public ResponseEntity<?> deleteAllJobsByColaboratorId(@RequestParam Long colaboratorId) {
+        jobService.deleteAllJobsByColaboratorId(colaboratorId);
         return ResponseEntity.noContent().build();
     }
 

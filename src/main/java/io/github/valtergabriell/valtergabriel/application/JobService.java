@@ -15,6 +15,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class JobService {
@@ -146,5 +147,10 @@ public class JobService {
         job.setCanceled(!job.getCanceled());
         jobRepo.save(job);
         return job;
+    }
+
+    public void deleteAllJobsByColaboratorId(Long colaboratorId) {
+        List<Job> jobs = jobRepo.findAll().stream().filter(j -> j.getColaboratorId().equals(colaboratorId)).toList();
+        jobRepo.deleteAll(jobs);
     }
 }

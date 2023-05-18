@@ -7,7 +7,9 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface JobRepository extends JpaRepository<Job, String> {
+    void deleteAllByColaboratorId(Long colaboratorId);
     List<Job> findByColaboratorId(Long colaboratorId);
+
     List<Job> findByLeadId(Long leadId);
 
     @Query(value = "SELECT j FROM Job j WHERE j.isCanceled = true")
